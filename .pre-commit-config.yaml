@@ -9,8 +9,6 @@ repos:
           name: Check JSON
         - id: detect-private-key
           name: Check for Sensitive Private keys
-        - id: detect-aws-credentials
-          name: Check for Sensitive AWS creds
         - id: requirements-txt-fixer
           name: Reorder Requirements txt
         - id: check-toml
@@ -39,16 +37,18 @@ repos:
         language: system
         types: [python]
         require_serial: true
+        args: ["streamlit_app"]
       - id: flake8
         name: flake8
-        entry: flake8 --config=src/.flake8
+        entry: flake8
         language: system
         types: [python]
         require_serial: true
+        args: ["--config=streamlit_app/.flake8", "streamlit_app"]
       - id: isort
         name: isort
         entry: isort
         require_serial: true
         language: system
         types_or: [cython, pyi, python]
-        args: ["--filter-files"]
+        args: ["--filter-files", "--profile=black", "streamlit_app"]

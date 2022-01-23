@@ -30,7 +30,7 @@ Use `--build` on subsequent runs to rebuild dependencies / docker image.
 ### Lint, Check, Test with Docker
 
 ```sh
-# Linting 
+# Linting
 docker-compose run streamlit-app nox.sh -s lint
 # Unit Testing
 docker-compose run streamlit-app nox.sh -s test
@@ -57,13 +57,13 @@ For code completion / linting / developing / etc.
 python -m venv venv
 . ./venv/bin/activate
 # .\venv\Scripts\activate for Windows
-python -m pip install -r ./src/requirements.dev.txt
+python -m pip install -r ./streamlit_app/requirements.dev.txt
 pre-commit install
 
 # Linting / Static Checking / Unit Testing
-python -m black src
-python -m isort --profile=black src
-python -m flake8 --config=./src/.flake8 src
+python -m black streamlit_app
+python -m isort --profile=black streamlit_app
+python -m flake8 --config=./streamlit_app/.flake8 streamlit_app
 ```
 
 ## Features
