@@ -1,0 +1,12 @@
+services:
+  streamlit-app:
+    ports:
+      - "8501:8501"
+    build: ./streamlit_app
+    command: entrypoint.sh
+    volumes:
+      - ./streamlit_app:/home/appuser:z
+    env_file:
+      - ./.env.dev
+    restart: "${DOCKER_RESTART_POLICY:-unless-stopped}"
+    stop_grace_period: "${DOCKER_STOP_GRACE_PERIOD:-3s}"

@@ -1,0 +1,2 @@
+echo "Running Nox"
+nox $@
