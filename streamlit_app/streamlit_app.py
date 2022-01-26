@@ -89,18 +89,21 @@ def main():
     """Main Streamlit App Entrypoint"""
     st.title("URL Scan :computer:")
     st.header(
-        "Never type a URL from real life again!"
-        "Upload an image and we'll scan any links so you can click them!"
+        "Never type a URL from real life again! "
+        "Take a picture with a URL in it and we'll scan any links so you can click them!"
     )
+    st.subheader("(Or upload an image you already have on your device)")
 
+    camera_bytes = st.camera_input("Take a picture")
     uploaded_bytes = st.file_uploader(
         "Upload an image",
         type=["png", "jpg", "jpeg"],
     )
 
-    if uploaded_bytes is not None:
-        with st.spinner("Getting Image Bytes"):
-            image_obj = Image.open(uploaded_bytes)
+    bytes_to_use = camera_bytes if camera_bytes is not None else uploaded_bytes
+    if bytes_to_use is not None:
+        with st.spinner("Loading Image Bytes"):
+            image_obj = Image.open(bytes_to_use)
             # Handle rotations if necessary
             image_obj = ImageOps.exif_transpose(image_obj)
             image_w, image_h = image_obj.size

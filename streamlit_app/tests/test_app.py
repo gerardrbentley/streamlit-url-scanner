@@ -10,6 +10,7 @@ class VisualTest(BaseCase):
         # tests page has identical structure to baseline
         # https://github.com/seleniumbase/SeleniumBase/tree/master/examples/visual_testing
         self.open("http://localhost:8501")
+        self.wait_for_element("#url-scan")
         self.assert_element("#url-scan")
         self.check_window(name="app_runs", level=3)
 
