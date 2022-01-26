@@ -2,7 +2,6 @@ import io
 import json
 
 import boto3
-import numpy as np
 import streamlit as st
 from PIL import Image, ImageDraw, ImageOps
 from pydantic import BaseSettings
@@ -79,6 +78,13 @@ def rekog_detect_by_bytes(image_bytes: bytes) -> dict:
     return response
 
 
+def url_with_protocol(raw_url: str, protocol: str = "http://") -> str:
+    if raw_url.startswith("http"):
+        return raw_url
+    else:
+        return protocol + raw_url
+
+
 def main():
     """Main Streamlit App Entrypoint"""
     st.title("URL Scan :computer:")
@@ -127,19 +133,17 @@ def main():
         st.success(
             f"Found {len(extracted_urls)} URLs in {len(extracted_text)} Lines of text!"
         )
-        image_array = np.array(image_obj)
-        painted_image_array = np.array(painted_image)
 
         col1, col2 = st.columns(2)
         col1.header("Detected Text Boxes")
         col1.image(
-            painted_image_array,
+            painted_image,
             use_column_width=True,
         )
 
         col2.header("Extracted URLs")
         for url in extracted_urls:
-            col2.write(f"- [{url}]({url})")
+            col2.write(f"- [{url}]({url_with_protocol(url)})")
 
         extracted_url_data = json.dumps(extracted_urls, indent=4, ensure_ascii=True)
         col2.download_button(
@@ -162,7 +166,7 @@ def main():
         with st.expander("Show Raw Image and Response", expanded=False):
             st.header("Raw Image")
             st.image(
-                image_array,
+                image_obj,
                 use_column_width=True,
             )
 
