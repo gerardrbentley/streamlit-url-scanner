@@ -81,7 +81,7 @@ fileWatcherType = "auto"
 cookieSecret = "usearealsecret558b507c433fdsa9aba71308777735f20d1f1017f41d61aaaf1b4fd12eb74983b81a"
 
 # If false, will attempt to open a browser window on start.
-# Default: false unless (1) we are on a Linux box where DISPLAY is unset, or (2) server.liveSave is set.
+# Default: false unless (1) we are on a Linux box where DISPLAY is unset, or (2) we are running in the Streamlit Atom plugin.
 headless = true
 
 # Automatically rerun script when the file is modified on disk.
@@ -114,6 +114,10 @@ enableXsrfProtection = true
 # Default: 200
 maxUploadSize = 200
 
+# Max size, in megabytes, of messages that can be sent via the WebSocket connection.
+# Default: 200
+maxMessageSize = 200
+
 # Enables support for websocket compression.
 # Default: true
 enableWebsocketCompression = true
@@ -122,7 +126,7 @@ enableWebsocketCompression = true
 [browser]
 
 # Internet address where users should point their browsers in order to connect to the app. Can be IP address or DNS name and path.
-# This is used to: - Set the correct URL for CORS and XSRF protection purposes. - Show the URL on the terminal - Open the browser - Tell the browser where to connect to the server when in liveSave mode.
+# This is used to: - Set the correct URL for CORS and XSRF protection purposes. - Show the URL on the terminal - Open the browser
 # Default: 'localhost'
 serverAddress = "localhost"
 
@@ -131,9 +135,17 @@ serverAddress = "localhost"
 gatherUsageStats = false
 
 # Port where users should point their browsers in order to connect to the app.
-# This is used to: - Set the correct URL for CORS and XSRF protection purposes. - Show the URL on the terminal - Open the browser - Tell the browser where to connect to the server when in liveSave mode.
+# This is used to: - Set the correct URL for CORS and XSRF protection purposes. - Show the URL on the terminal - Open the browser
 # Default: whatever value is set in server.port.
 serverPort = 8501
+
+
+[ui]
+
+# Flag to hide most of the UI elements found at the top of a Streamlit app.
+# NOTE: This does *not* hide the hamburger menu in the top-right of an app.
+# Default: false
+hideTopBar = false
 
 
 [mapbox]
@@ -152,41 +164,6 @@ showfileUploaderEncoding = true
 # Set to false to disable the deprecation warning for using the global pyplot instance.
 # Default: true
 showPyplotGlobalUse = true
-
-
-[s3]
-
-# Name of the AWS S3 bucket to save apps.
-# Default: (unset)
-#bucket =
-
-# URL root for external view of Streamlit apps.
-# Default: (unset)
-#url =
-
-# Access key to write to the S3 bucket.
-# Leave unset if you want to use an AWS profile.
-# Default: (unset)
-#accessKeyId =
-
-# Secret access key to write to the S3 bucket.
-# Leave unset if you want to use an AWS profile.
-# Default: (unset)
-#secretAccessKey =
-
-# The "subdirectory" within the S3 bucket where to save apps.
-# S3 calls paths "keys" which is why the keyPrefix is like a subdirectory. Use "" to mean the root directory.
-# Default: ""
-keyPrefix = ""
-
-# AWS region where the bucket is located, e.g. "us-west-2".
-# Default: (unset)
-#region =
-
-# AWS credentials profile to use.
-# Leave unset to use your default profile.
-# Default: (unset)
-#profile =
 
 
 [theme]

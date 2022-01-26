@@ -2,7 +2,6 @@ import io
 import json
 
 import boto3
-import numpy as np
 import streamlit as st
 from PIL import Image, ImageDraw, ImageOps
 from pydantic import BaseSettings
@@ -79,22 +78,32 @@ def rekog_detect_by_bytes(image_bytes: bytes) -> dict:
     return response
 
 
+def url_with_protocol(raw_url: str, protocol: str = "http://") -> str:
+    if raw_url.startswith("http"):
+        return raw_url
+    else:
+        return protocol + raw_url
+
+
 def main():
     """Main Streamlit App Entrypoint"""
     st.title("URL Scan :computer:")
     st.header(
-        "Never type a URL from real life again!"
-        "Upload an image and we'll scan any links so you can click them!"
+        "Never type a URL from real life again! "
+        "Take a picture with a URL in it and we'll scan any links so you can click them!"
     )
+    st.subheader("(Or upload an image you already have on your device)")
 
+    camera_bytes = st.camera_input("Take a picture")
     uploaded_bytes = st.file_uploader(
         "Upload an image",
         type=["png", "jpg", "jpeg"],
     )
 
-    if uploaded_bytes is not None:
-        with st.spinner("Getting Image Bytes"):
-            image_obj = Image.open(uploaded_bytes)
+    bytes_to_use = camera_bytes if camera_bytes is not None else uploaded_bytes
+    if bytes_to_use is not None:
+        with st.spinner("Loading Image Bytes"):
+            image_obj = Image.open(bytes_to_use)
             # Handle rotations if necessary
             image_obj = ImageOps.exif_transpose(image_obj)
             image_w, image_h = image_obj.size
@@ -127,19 +136,17 @@ def main():
         st.success(
             f"Found {len(extracted_urls)} URLs in {len(extracted_text)} Lines of text!"
         )
-        image_array = np.array(image_obj)
-        painted_image_array = np.array(painted_image)
 
         col1, col2 = st.columns(2)
         col1.header("Detected Text Boxes")
         col1.image(
-            painted_image_array,
+            painted_image,
             use_column_width=True,
         )
 
         col2.header("Extracted URLs")
         for url in extracted_urls:
-            col2.write(f"- [{url}]({url})")
+            col2.write(f"- [{url}]({url_with_protocol(url)})")
 
         extracted_url_data = json.dumps(extracted_urls, indent=4, ensure_ascii=True)
         col2.download_button(
@@ -162,7 +169,7 @@ def main():
         with st.expander("Show Raw Image and Response", expanded=False):
             st.header("Raw Image")
             st.image(
-                image_array,
+                image_obj,
                 use_column_width=True,
             )
 
